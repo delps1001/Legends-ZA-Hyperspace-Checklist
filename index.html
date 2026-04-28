@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyperspace Lumiose // Living Dex Speedrun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0612;
+    --bg-elev: #14092a;
+    --bg-card: #1a0d33;
+    --ink: #f4e9ff;
+    --ink-dim: #9d8fb8;
+    --ink-faint: #6a5a8a;
+    --accent: #ff00aa;
+    --accent-dim: #b8007a;
+    --electric: #00f0ff;
+    --gold: #ffcc00;
+    --done: #4ade80;
+    --border: #2a1a4a;
+    --border-bright: #4a2a7a;
+    --shadow-glow: 0 0 30px rgba(255, 0, 170, 0.25);
+    --shadow-electric: 0 0 20px rgba(0, 240, 255, 0.4);
+  }
+
+- {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+html {
+scroll-behavior: smooth;
+}
+
+body {
+font-family: ‘Fraunces’, Georgia, serif;
+background: var(–bg);
+color: var(–ink);
+line-height: 1.6;
+min-height: 100vh;
+overflow-x: hidden;
+background-image:
+radial-gradient(ellipse at 20% 0%, rgba(255, 0, 170, 0.08) 0%, transparent 50%),
+radial-gradient(ellipse at 80% 100%, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
+radial-gradient(ellipse at 50% 50%, rgba(120, 0, 200, 0.04) 0%, transparent 70%);
+background-attachment: fixed;
+}
+
+/* Grain overlay */
+body::before {
+content: “”;
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 1;
+opacity: 0.4;
+background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>”);
+mix-blend-mode: overlay;
+}
+
+.scanline {
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 2;
+background: repeating-linear-gradient(
+0deg,
+transparent 0px,
+transparent 2px,
+rgba(255, 0, 170, 0.015) 2px,
+rgba(255, 0, 170, 0.015) 4px
+);
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 2rem 1.5rem 4rem;
+position: relative;
+z-index: 10;
+}
+
+/* HEADER */
+header {
+padding: 2rem 0 3rem;
+border-bottom: 1px solid var(–border);
+margin-bottom: 3rem;
+position: relative;
+}
+
+header::after {
+content: “”;
+position: absolute;
+bottom: -1px;
+left: 0;
+width: 30%;
+height: 1px;
+background: linear-gradient(90deg, var(–accent), transparent);
+}
+
+.preamble {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.7rem;
+letter-spacing: 0.3em;
+color: var(–electric);
+text-transform: uppercase;
+margin-bottom: 1.5rem;
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+
+.preamble::before {
+content: “▸”;
+color: var(–accent);
+}
+
+.preamble .blink {
+animation: blink 1.4s infinite;
+}
+
+@keyframes blink {
+0%, 50% { opacity: 1; }
+51%, 100% { opacity: 0.2; }
+}
+
+h1.title {
+font-family: ‘Major Mono Display’, monospace;
+font-size: clamp(2.5rem, 7vw, 5.5rem);
+line-height: 0.9;
+letter-spacing: -0.02em;
+margin-bottom: 1rem;
+background: linear-gradient(135deg, var(–ink) 0%, var(–ink) 40%, var(–accent) 70%, var(–electric) 100%);
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+filter: drop-shadow(0 0 30px rgba(255, 0, 170, 0.3));
+}
+
+h1 .accent-line {
+display: block;
+color: var(–ink-dim);
+-webkit-text-fill-color: var(–ink-dim);
+}
+
+.subtitle {
+font-size: 1.1rem;
+font-style: italic;
+color: var(–ink-dim);
+max-width: 600px;
+font-weight: 300;
+}
+
+/* META INFO BAR */
+.meta-bar {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+gap: 1px;
+background: var(–border);
+border: 1px solid var(–border);
+margin: 2rem 0;
+}
+
+.meta-cell {
+background: var(–bg-elev);
+padding: 1rem 1.25rem;
+}
+
+.meta-label {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+color: var(–ink-faint);
+text-transform: uppercase;
+margin-bottom: 0.4rem;
+}
+
+.meta-value {
+font-family: ‘Major Mono Display’, monospace;
+font-size: 1.1rem;
+color: var(–ink);
+}
+
+.meta-value.accent {
+color: var(–accent);
+}
+
+.meta-value.electric {
+color: var(–electric);
+}
+
+/* MASTER PROGRESS */
+.master-progress {
+background: var(–bg-card);
+border: 1px solid var(–border-bright);
+padding: 2rem;
+margin: 2rem 0;
+position: relative;
+overflow: hidden;
+}
+
+.master-progress::before {
+content: “”;
+position: absolute;
+top: 0;
+left: 0;
+width: 4px;
+height: 100%;
+background: linear-gradient(180deg, var(–accent), var(–electric));
+}
+
+.master-progress h2 {
+font-family: ‘Major Mono Display’, monospace;
+font-size: 1.1rem;
+color: var(–electric);
+margin-bottom: 1.5rem;
+letter-spacing: 0.05em;
+}
+
+.progress-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 2rem;
+margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+.progress-grid { grid-template-columns: 1fr; }
+}
+
+.progress-stat {
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+}
+
+.progress-stat-label {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.7rem;
+letter-spacing: 0.15em;
+color: var(–ink-faint);
+text-transform: uppercase;
+}
+
+.progress-stat-value {
+font-family: ‘Major Mono Display’, monospace;
+font-size: 2.5rem;
+color: var(–ink);
+line-height: 1;
+}
+
+.progress-stat-value .denominator {
+font-size: 1.25rem;
+color: var(–ink-faint);
+}
+
+.progress-bar {
+height: 6px;
+background: var(–bg);
+border: 1px solid var(–border);
+overflow: hidden;
+position: relative;
+}
+
+.progress-bar-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–accent) 0%, var(–electric) 100%);
+width: 0%;
+transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+box-shadow: 0 0 10px var(–accent);
+}
+
+/* CONTROLS */
+.controls {
+display: flex;
+flex-wrap: wrap;
+gap: 0.75rem;
+margin: 2rem 0;
+}
+
+.btn {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.75rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+padding: 0.7rem 1.2rem;
+background: transparent;
+color: var(–ink);
+border: 1px solid var(–border-bright);
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.btn:hover {
+border-color: var(–accent);
+color: var(–accent);
+box-shadow: var(–shadow-glow);
+}
+
+.btn.danger:hover {
+border-color: #ff4444;
+color: #ff4444;
+box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+}
+
+/* PHASE NAVIGATION */
+.phase-nav {
+display: flex;
+flex-wrap: wrap;
+gap: 0.5rem;
+margin: 2rem 0;
+padding: 1rem;
+background: var(–bg-elev);
+border: 1px solid var(–border);
+}
+
+.phase-nav a {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.7rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 0.5rem 0.85rem;
+color: var(–ink-dim);
+text-decoration: none;
+border: 1px solid transparent;
+transition: all 0.2s;
+}
+
+.phase-nav a:hover {
+color: var(–accent);
+border-color: var(–accent);
+}
+
+.phase-nav a.complete {
+color: var(–done);
+}
+
+/* PHASE / SECTION */
+.phase {
+margin-bottom: 4rem;
+scroll-margin-top: 2rem;
+}
+
+.phase-header {
+display: flex;
+align-items: baseline;
+gap: 1.5rem;
+margin-bottom: 0.75rem;
+flex-wrap: wrap;
+}
+
+.phase-number {
+font-family: ‘Major Mono Display’, monospace;
+font-size: 0.9rem;
+color: var(–electric);
+letter-spacing: 0.1em;
+}
+
+.phase-title {
+font-family: ‘Fraunces’, serif;
+font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+font-weight: 600;
+font-variation-settings: “opsz” 144;
+letter-spacing: -0.02em;
+line-height: 1.1;
+color: var(–ink);
+}
+
+.phase-time {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.7rem;
+color: var(–ink-faint);
+letter-spacing: 0.15em;
+text-transform: uppercase;
+padding: 0.25rem 0.65rem;
+border: 1px solid var(–border);
+}
+
+.phase-progress {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.85rem;
+color: var(–ink-dim);
+margin-bottom: 1.5rem;
+padding-bottom: 1rem;
+border-bottom: 1px dashed var(–border);
+}
+
+.phase-progress .count {
+color: var(–accent);
+font-weight: 700;
+}
+
+.phase-progress .complete {
+color: var(–done);
+}
+
+/* GROUP (subsection within phase) */
+.group {
+margin-bottom: 2rem;
+background: var(–bg-card);
+border: 1px solid var(–border);
+padding: 1.5rem;
+position: relative;
+transition: border-color 0.3s;
+}
+
+.group.complete {
+border-color: var(–done);
+}
+
+.group.complete::before {
+content: “✓”;
+position: absolute;
+top: 1rem;
+right: 1rem;
+color: var(–done);
+font-size: 1.5rem;
+font-weight: bold;
+}
+
+.group-title {
+font-family: ‘Major Mono Display’, monospace;
+font-size: 0.95rem;
+letter-spacing: 0.08em;
+color: var(–electric);
+margin-bottom: 1.25rem;
+padding-bottom: 0.75rem;
+border-bottom: 1px solid var(–border);
+}
+
+/* CHECKLIST ITEMS */
+.checklist {
+list-style: none;
+}
+
+.checklist li {
+margin-bottom: 0.5rem;
+}
+
+.check-item {
+display: flex;
+align-items: flex-start;
+gap: 0.85rem;
+padding: 0.65rem 0.75rem;
+cursor: pointer;
+transition: background 0.15s;
+border-left: 2px solid transparent;
+user-select: none;
+}
+
+.check-item:hover {
+background: rgba(255, 0, 170, 0.05);
+border-left-color: var(–accent);
+}
+
+.check-item.checked {
+border-left-color: var(–done);
+}
+
+.check-item.checked .check-label {
+color: var(–ink-faint);
+text-decoration: line-through;
+text-decoration-color: var(–ink-faint);
+}
+
+.checkbox {
+flex-shrink: 0;
+width: 18px;
+height: 18px;
+border: 1.5px solid var(–border-bright);
+background: var(–bg);
+margin-top: 0.25rem;
+position: relative;
+transition: all 0.2s;
+}
+
+.check-item:hover .checkbox {
+border-color: var(–accent);
+}
+
+.check-item.checked .checkbox {
+background: var(–done);
+border-color: var(–done);
+}
+
+.check-item.checked .checkbox::after {
+content: “”;
+position: absolute;
+left: 5px;
+top: 1px;
+width: 5px;
+height: 10px;
+border: solid var(–bg);
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+
+.check-label {
+flex: 1;
+color: var(–ink);
+font-size: 1rem;
+line-height: 1.5;
+}
+
+.check-label strong {
+font-weight: 700;
+color: var(–ink);
+}
+
+.check-item.checked .check-label strong {
+color: var(–ink-faint);
+}
+
+.check-label code {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.85em;
+background: var(–bg);
+padding: 0.1em 0.4em;
+border: 1px solid var(–border);
+color: var(–electric);
+}
+
+.check-label em {
+color: var(–ink-dim);
+font-style: italic;
+}
+
+/* SUB-CHECKLIST */
+.sub-list {
+list-style: none;
+margin-top: 0.5rem;
+margin-left: 1.75rem;
+padding-left: 1rem;
+border-left: 1px dashed var(–border-bright);
+}
+
+.sub-list .check-item {
+padding: 0.4rem 0.5rem;
+}
+
+.sub-list .check-label {
+font-size: 0.92rem;
+color: var(–ink-dim);
+}
+
+.sub-list .checkbox {
+width: 14px;
+height: 14px;
+}
+
+.sub-list .check-item.checked .checkbox::after {
+left: 3px;
+top: 0;
+width: 4px;
+height: 8px;
+}
+
+/* DEX GRID — special formatting for Pokémon catch lists */
+.dex-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 0.4rem;
+margin-top: 0.5rem;
+}
+
+.dex-item {
+display: flex;
+align-items: center;
+gap: 0.6rem;
+padding: 0.5rem 0.7rem;
+background: var(–bg);
+border: 1px solid var(–border);
+cursor: pointer;
+transition: all 0.15s;
+user-select: none;
+}
+
+.dex-item:hover {
+border-color: var(–accent);
+transform: translateX(2px);
+}
+
+.dex-item.checked {
+background: rgba(74, 222, 128, 0.08);
+border-color: var(–done);
+}
+
+.dex-item.checked .dex-name {
+color: var(–ink-faint);
+text-decoration: line-through;
+}
+
+.dex-checkbox {
+flex-shrink: 0;
+width: 14px;
+height: 14px;
+border: 1.5px solid var(–border-bright);
+background: var(–bg-elev);
+position: relative;
+transition: all 0.2s;
+}
+
+.dex-item.checked .dex-checkbox {
+background: var(–done);
+border-color: var(–done);
+}
+
+.dex-item.checked .dex-checkbox::after {
+content: “”;
+position: absolute;
+left: 3px;
+top: 0;
+width: 4px;
+height: 8px;
+border: solid var(–bg);
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+
+.dex-name {
+font-size: 0.88rem;
+color: var(–ink);
+line-height: 1.2;
+}
+
+/* CALLOUT / NOTE */
+.callout {
+padding: 1rem 1.25rem;
+background: rgba(0, 240, 255, 0.05);
+border-left: 3px solid var(–electric);
+margin: 1rem 0;
+font-size: 0.92rem;
+color: var(–ink-dim);
+font-style: italic;
+}
+
+.callout.warning {
+background: rgba(255, 204, 0, 0.05);
+border-left-color: var(–gold);
+}
+
+.callout strong {
+color: var(–ink);
+font-style: normal;
+}
+
+/* TABLE */
+.time-table {
+width: 100%;
+border-collapse: collapse;
+margin: 1rem 0;
+font-size: 0.9rem;
+}
+
+.time-table th, .time-table td {
+padding: 0.7rem 1rem;
+text-align: left;
+border-bottom: 1px solid var(–border);
+}
+
+.time-table th {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.7rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–ink-faint);
+}
+
+.time-table tbody tr:hover {
+background: rgba(255, 0, 170, 0.03);
+}
+
+.time-table .total-row {
+font-weight: 700;
+}
+
+.time-table .total-row td {
+color: var(–accent);
+border-bottom: none;
+}
+
+/* FINAL CHECKLIST CELEBRATION */
+.victory-banner {
+text-align: center;
+padding: 3rem 1.5rem;
+margin: 3rem 0;
+border: 1px solid var(–border-bright);
+background: linear-gradient(135deg, rgba(255, 0, 170, 0.08) 0%, rgba(0, 240, 255, 0.08) 100%);
+position: relative;
+overflow: hidden;
+}
+
+.victory-banner.complete {
+border-color: var(–gold);
+background: linear-gradient(135deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 0, 170, 0.1) 100%);
+box-shadow: 0 0 60px rgba(255, 204, 0, 0.2);
+}
+
+.victory-banner.complete::before {
+content: “”;
+position: absolute;
+inset: 0;
+background: repeating-linear-gradient(
+45deg,
+transparent,
+transparent 10px,
+rgba(255, 204, 0, 0.03) 10px,
+rgba(255, 204, 0, 0.03) 20px
+);
+pointer-events: none;
+}
+
+.victory-title {
+font-family: ‘Major Mono Display’, monospace;
+font-size: clamp(1.5rem, 4vw, 2.5rem);
+color: var(–ink);
+margin-bottom: 1rem;
+letter-spacing: 0.05em;
+}
+
+.victory-banner.complete .victory-title {
+color: var(–gold);
+text-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+}
+
+.victory-count {
+font-family: ‘Major Mono Display’, monospace;
+font-size: clamp(3rem, 8vw, 5rem);
+color: var(–accent);
+margin: 1rem 0;
+line-height: 1;
+}
+
+.victory-banner.complete .victory-count {
+color: var(–gold);
+}
+
+.victory-message {
+font-family: ‘Fraunces’, serif;
+font-size: 1.15rem;
+color: var(–ink-dim);
+font-style: italic;
+}
+
+/* FOOTER */
+footer {
+margin-top: 4rem;
+padding-top: 2rem;
+border-top: 1px solid var(–border);
+text-align: center;
+font-family: ‘Space Mono’, monospace;
+font-size: 0.7rem;
+letter-spacing: 0.15em;
+color: var(–ink-faint);
+text-transform: uppercase;
+}
+
+footer .pulse {
+color: var(–accent);
+animation: blink 2s infinite;
+}
+
+/* Section divider */
+.divider {
+height: 1px;
+background: linear-gradient(90deg, transparent, var(–border-bright), transparent);
+margin: 3rem 0;
+}
+
+/* Reference section special styling */
+.reference {
+background: var(–bg-elev);
+border: 1px solid var(–border);
+padding: 1.5rem;
+margin: 1rem 0;
+}
+
+.reference-title {
+font-family: ‘Major Mono Display’, monospace;
+font-size: 0.85rem;
+color: var(–gold);
+letter-spacing: 0.1em;
+margin-bottom: 1rem;
+}
+
+.stones-list {
+font-family: ‘Space Mono’, monospace;
+font-size: 0.85rem;
+color: var(–ink-dim);
+line-height: 1.8;
+}
+
+.stones-list .stone {
+color: var(–electric);
+}
+
+/* Animations */
+@keyframes pulse-glow {
+0%, 100% { box-shadow: 0 0 5px var(–accent); }
+50% { box-shadow: 0 0 20px var(–accent), 0 0 30px var(–accent); }
+}
+
+.reset-confirm {
+position: fixed;
+inset: 0;
+background: rgba(10, 6, 18, 0.9);
+display: none;
+align-items: center;
+justify-content: center;
+z-index: 100;
+backdrop-filter: blur(8px);
+}
+
+.reset-confirm.show {
+display: flex;
+}
+
+.reset-modal {
+background: var(–bg-card);
+border: 1px solid var(–accent);
+padding: 2rem;
+max-width: 400px;
+box-shadow: 0 0 40px rgba(255, 0, 170, 0.4);
+}
+
+.reset-modal h3 {
+font-family: ‘Major Mono Display’, monospace;
+color: var(–accent);
+margin-bottom: 1rem;
+letter-spacing: 0.05em;
+}
+
+.reset-modal p {
+color: var(–ink-dim);
+margin-bottom: 1.5rem;
+}
+
+.reset-modal .btn-row {
+display: flex;
+gap: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+.container { padding: 1rem; }
+.group { padding: 1rem; }
+.controls { gap: 0.5rem; }
+.btn { font-size: 0.7rem; padding: 0.6rem 0.9rem; }
+}
+</style>
+
+</head>
+<body>
+<div class="scanline"></div>
+
+<div class="container">
+
+  <header>
+    <div class="preamble">
+      <span>SYS_LOG</span>
+      <span>::</span>
+      <span>HYPERSPACE.PROTOCOL.v2.0.1</span>
+      <span class="blink">_</span>
+    </div>
+    <h1 class="title">
+      Hyperspace<br>
+      Lumiose<br>
+      <span class="accent-line">// Living Dex</span>
+    </h1>
+    <p class="subtitle">
+      A glitchless speedrun route for completing the 132-entry Hyperspace Pokédex —
+      catching every Pokémon fresh, in execution order.
+    </p>
+
+```
+<div class="meta-bar">
+  <div class="meta-cell">
+    <div class="meta-label">Total Entries</div>
+    <div class="meta-value accent">132</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">Est. Time</div>
+    <div class="meta-value">23–33h</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">Style</div>
+    <div class="meta-value electric">Glitchless</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">Patch</div>
+    <div class="meta-value">v2.0.1</div>
+  </div>
+</div>
+
+<div class="master-progress">
+  <h2>// MASTER PROGRESS</h2>
+  <div class="progress-grid">
+    <div class="progress-stat">
+      <div class="progress-stat-label">Tasks Complete</div>
+      <div class="progress-stat-value"><span id="tasks-done">0</span><span class="denominator">/<span id="tasks-total">0</span></span></div>
+      <div class="progress-bar"><div class="progress-bar-fill" id="tasks-bar"></div></div>
+    </div>
+    <div class="progress-stat">
+      <div class="progress-stat-label">Pokédex Captured</div>
+      <div class="progress-stat-value"><span id="dex-done">0</span><span class="denominator">/132</span></div>
+      <div class="progress-bar"><div class="progress-bar-fill" id="dex-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn" onclick="exportProgress()">↓ Export Save</button>
+  <button class="btn" onclick="document.getElementById('import-file').click()">↑ Import Save</button>
+  <input type="file" id="import-file" accept=".json" style="display:none" onchange="importProgress(event)">
+  <button class="btn danger" onclick="confirmReset()">⌫ Reset All</button>
+</div>
+
+<nav class="phase-nav" id="phase-nav">
+  <a href="#phase-0">Phase 0 — Prep</a>
+  <a href="#phase-1">Phase 1 — Ignition</a>
+  <a href="#phase-2">Phase 2 — 1★/2★</a>
+  <a href="#phase-3">Phase 3 — 3★/4★</a>
+  <a href="#phase-4">Phase 4 — Credits</a>
+  <a href="#phase-5">Phase 5 — Postgame</a>
+  <a href="#phase-6">Phase 6 — EX Missions</a>
+  <a href="#trade-evos">Trade Evos</a>
+  <a href="#references">References</a>
+  <a href="#final">Final Check</a>
+</nav>
+```
+
+  </header>
+
+  <!-- ============== PHASE 0 ============== -->
+
+  <section class="phase" id="phase-0" data-phase="phase-0">
+    <div class="phase-header">
+      <span class="phase-number">PHASE 0</span>
+      <h2 class="phase-title">Pre-DLC Prep</h2>
+      <span class="phase-time">~2–3 hr</span>
+    </div>
+    <div class="phase-progress">Don't skip this. Front-loading prep saves ~8 hours over the full run. <span class="count" data-phase-count="phase-0"></span></div>
+
+```
+<div class="group" data-group="prep-training">
+  <h3 class="group-title">// TRAINING & GEAR</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="prep-train-100"><div class="checkbox"></div><div class="check-label">Train at least 3 Pokémon to <strong>Lv. 100</strong> (Hyperspace mons spawn Lv. 100–200; no EXP earned in-zone)</div></div></li>
+    <li><div class="check-item" data-task="prep-blue-plush"><div class="checkbox"></div><div class="check-label">Max <strong>Blue Canari Plush</strong> to Lv. 3 at Colorful Screw Exchange (8 screws) — biggest catch-rate boost in game</div></div></li>
+    <li><div class="check-item" data-task="prep-pink-plush"><div class="checkbox"></div><div class="check-label">Max <strong>Pink Canari Plush</strong> to Lv. 3 (3× Mega Shard yield, needed for Magearna grind)</div></div></li>
+    <li>
+      <div class="check-item" data-task="prep-false-swipe"><div class="checkbox"></div><div class="check-label">Clear base-game <strong>SM 133 "Farfetch'd Ambush"</strong> for the False Swipe TM</div></div>
+      <ul class="sub-list">
+        <li><div class="check-item" data-task="prep-fs-bouche"><div class="checkbox"></div><div class="check-label">Talk to Bouche at Jaune Pokémon Center</div></div></li>
+        <li><div class="check-item" data-task="prep-fs-rouge"><div class="checkbox"></div><div class="check-label">Fight three Farfetch'd trainers at Rouge Sector 7 at night</div></div></li>
+      </ul>
+    </li>
+    <li><div class="check-item" data-task="prep-fs-equip"><div class="checkbox"></div><div class="check-label">Put False Swipe on a fast Pokémon (Gallade or Sirfetch'd recommended)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="prep-items">
+  <h3 class="group-title">// ITEM STOCKPILE</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="prep-ultra-balls"><div class="checkbox"></div><div class="check-label"><strong>50+ Ultra Balls</strong></div></div></li>
+    <li><div class="check-item" data-task="prep-quick-balls"><div class="checkbox"></div><div class="check-label"><strong>20+ Quick Balls</strong> (first-turn throws)</div></div></li>
+    <li><div class="check-item" data-task="prep-dusk-balls"><div class="checkbox"></div><div class="check-label"><strong>20+ Dusk Balls</strong> (night catches)</div></div></li>
+    <li><div class="check-item" data-task="prep-berries"><div class="checkbox"></div><div class="check-label">30-stack of every common berry from Lumiose berry stalls</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="prep-mystery">
+  <h3 class="group-title">// MYSTERY GIFTS TO REDEEM</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="prep-diancite"><div class="checkbox"></div><div class="check-label"><strong>Diancite</strong> (live since Nov 6, 2025)</div></div></li>
+    <li><div class="check-item" data-task="prep-mewtwonite"><div class="checkbox"></div><div class="check-label"><strong>Mewtwonite X & Y</strong> (live since Nov 19, 2025)</div></div></li>
+    <li><div class="check-item" data-task="prep-garchompite"><div class="checkbox"></div><div class="check-label"><strong>Garchompite Z</strong> (live since Feb 27, 2026)</div></div></li>
+    <li><div class="check-item" data-task="prep-luxe"><div class="checkbox"></div><div class="check-label"><strong>Luxurious Poké Ball Set</strong> (email code from DLC purchase — 12 Apricorn balls)</div></div></li>
+  </ul>
+</div>
+```
+
+  </section>
+
+  <!-- ============== PHASE 1 ============== -->
+
+  <section class="phase" id="phase-1" data-phase="phase-1">
+    <div class="phase-header">
+      <span class="phase-number">PHASE 1</span>
+      <h2 class="phase-title">DLC Ignition</h2>
+      <span class="phase-time">~45 min</span>
+    </div>
+    <div class="phase-progress"><span class="count" data-phase-count="phase-1"></span></div>
+
+```
+<div class="group" data-group="phase1-main">
+  <h3 class="group-title">// FIRST DESCENT</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="p1-elevator"><div class="checkbox"></div><div class="check-label">Take Hotel Z elevator to roof, talk to Ansha → starts <strong>SM 120 "Donuts of Unworldly Deliciousness!"</strong></div></div></li>
+    <li><div class="check-item" data-task="p1-donut"><div class="checkbox"></div><div class="check-label">Make first donut, follow Ansha into Coulant Waterway distortion</div></div></li>
+    <li><div class="check-item" data-task="p1-mankey"><div class="checkbox"></div><div class="check-label">Battle Lv. 110 Mankey ambush (catch 1 <strong>Mankey</strong> — also satisfies 1★ dex entry)</div></div></li>
+    <li><div class="check-item" data-task="p1-mable"><div class="checkbox"></div><div class="check-label">Return to Mable, Hyperspace dex tab unlocks</div></div></li>
+  </ul>
+</div>
+```
+
+  </section>
+
+  <!-- ============== PHASE 2 ============== -->
+
+  <section class="phase" id="phase-2" data-phase="phase-2">
+    <div class="phase-header">
+      <span class="phase-number">PHASE 2</span>
+      <h2 class="phase-title">HM 1–3 // 1★ and 2★ Sweep</h2>
+      <span class="phase-time">~3 hr</span>
+    </div>
+    <div class="phase-progress"><span class="count" data-phase-count="phase-2"></span></div>
+
+```
+<div class="group" data-group="hm1">
+  <h3 class="group-title">// HYPERSPACE MISSION 1: SURVEY NO. 1 (7,000 PTS)</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm1-grind"><div class="checkbox"></div><div class="check-label">Grind 1★ Hyperspace Wild Zones to <strong>7,000 Survey Points</strong></div></div></li>
+    <li><div class="check-item" data-task="hm1-bonus"><div class="checkbox"></div><div class="check-label">Complete all 3 survey tasks per zone for <strong>Bonus Ball</strong> (Hyper Berries)</div></div></li>
+  </ul>
+  <div class="callout"><strong>Pro tip:</strong> Sit on any bench → "Kill some time here" to reroll all zone locations & species.</div>
+</div>
+
+<div class="group" data-group="dex-1star">
+  <h3 class="group-title">// 1★ WILD ZONE CATCHES (22)</h3>
+  <div class="dex-grid" id="dex-grid-1star"></div>
+</div>
+
+<div class="group" data-group="hm1-boss">
+  <h3 class="group-title">// BOSS & CUTSCENES</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm1-absol"><div class="checkbox"></div><div class="check-label">Defeat <strong>Rogue Mega Absol Z</strong> (Lv. 105) → clears HM 1, awards Absolite Z</div></div></li>
+    <li><div class="check-item" data-task="hm2"><div class="checkbox"></div><div class="check-label">Complete <strong>HM 2 "Lebanne Arrives with a Bang!"</strong> (cutscene battle vs Lebanne + Gwynn)</div></div></li>
+    <li><div class="check-item" data-task="hm3-start"><div class="checkbox"></div><div class="check-label">Start <strong>HM 3: Survey No. 2</strong> (10,000 pts)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="dex-2star">
+  <h3 class="group-title">// 2★ WILD ZONE CATCHES (16)</h3>
+  <div class="callout">Bench-reroll until 2★ portals spawn. The Hoenn starters live here.</div>
+  <div class="dex-grid" id="dex-grid-2star"></div>
+</div>
+
+<div class="group" data-group="hm3-boss">
+  <h3 class="group-title">// BOSS</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm3-staraptor"><div class="checkbox"></div><div class="check-label">Defeat <strong>Rogue Mega Staraptor</strong> (Lv. 120) → clears HM 3, awards Staraptite</div></div></li>
+  </ul>
+</div>
+```
+
+  </section>
+
+  <!-- ============== PHASE 3 ============== -->
+
+  <section class="phase" id="phase-3" data-phase="phase-3">
+    <div class="phase-header">
+      <span class="phase-number">PHASE 3</span>
+      <h2 class="phase-title">HM 4–8 // 3★ and 4★ Middlegame</h2>
+      <span class="phase-time">~4 hr</span>
+    </div>
+    <div class="phase-progress"><span class="count" data-phase-count="phase-3"></span></div>
+
+```
+<div class="group" data-group="phase3-utility">
+  <h3 class="group-title">// CUTSCENES & UTILITY UNLOCKS</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm4"><div class="checkbox"></div><div class="check-label">Watch <strong>HM 4 "Le Musée et le Café"</strong> (cutscene)</div></div></li>
+    <li><div class="check-item" data-task="hm5"><div class="checkbox"></div><div class="check-label">Complete <strong>HM 5 "A Boom from the Strategy Room"</strong></div></div></li>
+    <li><div class="check-item" data-task="sm147"><div class="checkbox"></div><div class="check-label">Take <strong>SM 147</strong> to unlock Gulpin at Hotel Z front desk (donut ingredient ↔ berry recycling)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="hm6">
+  <h3 class="group-title">// HYPERSPACE MISSION 6: SURVEY NO. 3 (15,000 PTS)</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm6-unlock"><div class="checkbox"></div><div class="check-label">Unlock 3★ Wild Zones + Hyperspace Battle Zones</div></div></li>
+  </ul>
+  <div class="callout"><strong>Battle Zone clear ≈ 10,000 Survey Points</strong> (3 clears = 1 future Special Scan).</div>
+</div>
+
+<div class="group" data-group="dex-3star">
+  <h3 class="group-title">// 3★ WILD ZONE CATCHES (34)</h3>
+  <div class="dex-grid" id="dex-grid-3star"></div>
+</div>
+
+<div class="group" data-group="hm6-boss">
+  <h3 class="group-title">// BOSS & CONTINUING STORY</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm6-tatsugiri"><div class="checkbox"></div><div class="check-label">Defeat <strong>Rogue Mega Tatsugiri</strong> (Lv. 140) → awards Tatsugirinite</div></div></li>
+    <li><div class="check-item" data-task="hm7"><div class="checkbox"></div><div class="check-label">Watch <strong>HM 7 "Naveen's Not OK"</strong> (cutscene)</div></div></li>
+    <li><div class="check-item" data-task="hm8-start"><div class="checkbox"></div><div class="check-label">Start <strong>HM 8: Survey No. 4</strong> (23,000 pts)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="dex-4star">
+  <h3 class="group-title">// 4★ WILD ZONE CATCHES (34)</h3>
+  <div class="dex-grid" id="dex-grid-4star"></div>
+</div>
+
+<div class="group" data-group="hm8-boss">
+  <h3 class="group-title">// BOSS</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm8-meowstic"><div class="checkbox"></div><div class="check-label">Defeat <strong>Rogue Mega Meowstic-M</strong> (Lv. 150) → clears HM 8, awards Meowsticite</div></div></li>
+  </ul>
+</div>
+```
+
+  </section>
+
+  <!-- ============== PHASE 4 ============== -->
+
+  <section class="phase" id="phase-4" data-phase="phase-4">
+    <div class="phase-header">
+      <span class="phase-number">PHASE 4</span>
+      <h2 class="phase-title">HM 9–11 // Credits Push</h2>
+      <span class="phase-time">~2 hr</span>
+    </div>
+    <div class="phase-progress"><span class="count" data-phase-count="phase-4"></span></div>
+
+```
+<div class="group" data-group="hm9">
+  <h3 class="group-title">// HYPERSPACE MISSION 9: SURVEY NO. 5 (28,000 PTS)</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm9-points"><div class="checkbox"></div><div class="check-label">Hit 28,000 points</div></div></li>
+    <li><div class="check-item dex" data-task="dex-heatran"><div class="checkbox"></div><div class="check-label">Defeat <strong>Rogue Mega Heatran</strong> (Lv. 180) → catch <strong>Heatran</strong> ✓</div></div></li>
+    <li><div class="check-item" data-task="hm9-heatranite"><div class="checkbox"></div><div class="check-label">Receive Heatranite + Hyperspace Butter (8-berry donuts unlock)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="dex-5star">
+  <h3 class="group-title">// 5★ WILD ZONE SWEEP (4)</h3>
+  <div class="callout">Bench-reroll to find 5★ zones. Stockpile rare Hyper Berries: <strong>Haban, Colbur, Babiri, Chilan, Roseli</strong> — needed for Special Donuts.</div>
+  <div class="dex-grid" id="dex-grid-5star"></div>
+  <ul class="checklist" style="margin-top: 1rem;">
+    <li><div class="check-item" data-task="hm9-berries"><div class="checkbox"></div><div class="check-label">Stockpile rare Hyper Berries (Haban, Colbur, Babiri, Chilan, Roseli)</div></div></li>
+    <li><div class="check-item" data-task="sm122"><div class="checkbox"></div><div class="check-label">Take <strong>SM 122 "Let's Golden Goooooo!"</strong> for gift Gimmighoul</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="hm10">
+  <h3 class="group-title">// HYPERSPACE MISSION 10</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm10"><div class="checkbox"></div><div class="check-label">Watch <strong>HM 10 "Mayhem at Midnight"</strong> (cutscene)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="hm11">
+  <h3 class="group-title">// HYPERSPACE MISSION 11: SURVEY NO. 6 (50,000 PTS)</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm11-points"><div class="checkbox"></div><div class="check-label">Hit 50,000 points</div></div></li>
+    <li><div class="check-item" data-task="hm11-cruller"><div class="checkbox"></div><div class="check-label">Craft <strong>Bad Dreams Cruller</strong> (sweet 310 / sour 310 / spicy 100)</div></div></li>
+    <li><div class="check-item" data-task="hm11-newmoon"><div class="checkbox"></div><div class="check-label">Enter Hyperspace Newmoon Nightmare</div></div></li>
+    <li><div class="check-item dex" data-task="dex-darkrai"><div class="checkbox"></div><div class="check-label">Defeat & catch <strong>Darkrai</strong> ✓ (Lv. 200) + Darkranite</div></div></li>
+    <li><div class="check-item" data-task="hm11-credits"><div class="checkbox"></div><div class="check-label">🎬 <strong>CREDITS ROLL</strong></div></div></li>
+  </ul>
+</div>
+```
+
+  </section>
+
+  <!-- ============== PHASE 5 ============== -->
+
+  <section class="phase" id="phase-5" data-phase="phase-5">
+    <div class="phase-header">
+      <span class="phase-number">PHASE 5</span>
+      <h2 class="phase-title">Post-Credits Cleanup</h2>
+      <span class="phase-time">~10–18 hr</span>
+    </div>
+    <div class="phase-progress">RNG-heavy. The bottleneck of the entire run. <span class="count" data-phase-count="phase-5"></span></div>
+
+```
+<div class="group" data-group="p5-scan-unlock">
+  <h3 class="group-title">// UNLOCK SPECIAL SCAN</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="sm188"><div class="checkbox"></div><div class="check-label">Visit Rust Syndicate Office → take <strong>SM 188 "Start Special Scanning!"</strong></div></div></li>
+    <li><div class="check-item" data-task="sm188-philippe"><div class="checkbox"></div><div class="check-label">Talk to Philippe (Special Scan = 25,000 Survey Points per use)</div></div></li>
+  </ul>
+  <div class="callout warning"><strong>Don't scan yet</strong> — finish named missions first while farming organically.</div>
+</div>
+
+<div class="group" data-group="p5-named-legendaries">
+  <h3 class="group-title">// NAMED-MISSION LEGENDARIES</h3>
+  <ul class="checklist">
+    <li><div class="check-item dex" data-task="dex-genesect"><div class="checkbox"></div><div class="check-label"><strong>SM 191 "Collecting Four Drives"</strong> → <strong>Genesect</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-marshadow"><div class="checkbox"></div><div class="check-label"><strong>SM 192 "The Stealthy Shadow"</strong> → <strong>Marshadow</strong> ✓</div></div></li>
+    <li>
+      <div class="check-item" data-task="sm193"><div class="checkbox"></div><div class="check-label"><strong>SM 193 "Dreams of Meltan"</strong></div></div>
+      <ul class="sub-list">
+        <li><div class="check-item dex" data-task="dex-meltan"><div class="checkbox"></div><div class="check-label">Catch <strong>Meltan</strong> ✓</div></div></li>
+        <li><div class="check-item dex" data-task="dex-melmetal"><div class="checkbox"></div><div class="check-label">Receive gift <strong>Melmetal</strong> ✓ (answer "yes" to evolve)</div></div></li>
+      </ul>
+    </li>
+    <li><div class="check-item dex" data-task="dex-volcanion"><div class="checkbox"></div><div class="check-label"><strong>SM 194 "Volcanion Unleashed"</strong> → <strong>Volcanion</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-hoopa"><div class="checkbox"></div><div class="check-label"><strong>SM 196 "The Djinn Unbound"</strong> → battle Hoopa Unbound at Bleu Sector 6 rooftop, awards Prison Bottle → <strong>Hoopa</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-magearna"><div class="checkbox"></div><div class="check-label"><strong>SM 195 "Restarting Magearna"</strong> → give Jett 999 Mega Shards → <strong>Magearna</strong> ✓ + Magearnite</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="p5-primals">
+  <h3 class="group-title">// PRIMALS + RAYQUAZA (HM 12–14)</h3>
+  <div class="callout warning"><strong>⚠️ Backup save before crafting each Special Donut</strong> (title screen → Up + X + B). Recipes are one-shot per playthrough. Reroll for Sparkling Power Lv. 3 if you want shinies.</div>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="hm12p1"><div class="checkbox"></div><div class="check-label">Start <strong>HM 12 Pt. 1 "The Greatest Gift"</strong> (70,000 pts) — pick Omega or Alpha first</div></div></li>
+    <li>
+      <div class="check-item dex" data-task="dex-groudon"><div class="checkbox"></div><div class="check-label">Craft <strong>Omega Old-Fashioned Donut</strong> → ruby distortion at Jaune Sector 11 → catch Primal <strong>Groudon</strong> ✓ + Red Orb (HM 13)</div></div>
+    </li>
+    <li>
+      <div class="check-item dex" data-task="dex-kyogre"><div class="checkbox"></div><div class="check-label">Craft <strong>Alpha Old-Fashioned Donut</strong> → WZ5 distortion → catch Primal <strong>Kyogre</strong> ✓ + Blue Orb (HM 14)</div></div>
+    </li>
+    <li><div class="check-item" data-task="hm12p2"><div class="checkbox"></div><div class="check-label">Complete <strong>HM 12 Pt. 2</strong> (100,000 pts)</div></div></li>
+    <li><div class="check-item" data-task="rayquaza-donut"><div class="checkbox"></div><div class="check-label">Craft <strong>Delta Old-Fashioned Donut</strong> (sour 340 / fresh 390) → Hyperspace Sky Pillar atop Hotel Z</div></div></li>
+    <li><div class="check-item dex" data-task="dex-rayquaza"><div class="checkbox"></div><div class="check-label">Defeat & catch Lv. 200 Mega <strong>Rayquaza</strong> ✓ (guaranteed catch)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="p5-scan-grind">
+  <h3 class="group-title">// SPECIAL SCAN GRIND (THE BIG BOTTLENECK)</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="sm189"><div class="checkbox"></div><div class="check-label">Pre-req: take <strong>SM 189 "Siblings of the Sky"</strong> (unlocks Latias/Latios in scan pool + their Mega Stones)</div></div></li>
+    <li><div class="check-item dex" data-task="dex-latias"><div class="checkbox"></div><div class="check-label">Scan + catch <strong>Latias</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-latios"><div class="checkbox"></div><div class="check-label">Scan + catch <strong>Latios</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-cobalion"><div class="checkbox"></div><div class="check-label">Scan + catch <strong>Cobalion</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-terrakion"><div class="checkbox"></div><div class="check-label">Scan + catch <strong>Terrakion</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-virizion"><div class="checkbox"></div><div class="check-label">Scan + catch <strong>Virizion</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-keldeo"><div class="checkbox"></div><div class="check-label">Scan + catch <strong>Keldeo</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-meloetta"><div class="checkbox"></div><div class="check-label">Scan + catch <strong>Meloetta</strong> ✓</div></div></li>
+  </ul>
+  <div class="callout">📊 Each scan costs 25,000 pts (~3 Battle Zone clears = 30–45 min). Only "Unknown" 5★ zones contain these. Community average: 15–25 scans for all 7. None are shiny-locked — backup-save SR if you want shinies.</div>
+</div>
+```
+
+  </section>
+
+  <!-- ============== PHASE 6 ============== -->
+
+  <section class="phase" id="phase-6" data-phase="phase-6">
+    <div class="phase-header">
+      <span class="phase-number">PHASE 6</span>
+      <h2 class="phase-title">EX Missions + Zeraora</h2>
+      <span class="phase-time">~2–3 hr</span>
+    </div>
+    <div class="phase-progress"><span class="count" data-phase-count="phase-6"></span></div>
+
+```
+<div class="group" data-group="p6-ex-missions">
+  <h3 class="group-title">// EX MISSIONS</h3>
+  <ul class="checklist">
+    <li>
+      <div class="check-item" data-task="ex1"><div class="checkbox"></div><div class="check-label"><strong>EX 1 "Shine Bright Like a Gemstone"</strong> (Diancite required)</div></div>
+      <ul class="sub-list">
+        <li><div class="check-item" data-task="ex1-looker"><div class="checkbox"></div><div class="check-label">Visit Looker Bureau → follow Mimi the Espurr</div></div></li>
+        <li><div class="check-item" data-task="ex1-diancie"><div class="checkbox"></div><div class="check-label">Catch Lv. 70 Diancie protected by 2× Lv. 66 Carbink (<em>not in Hyperspace dex but unlocks EX 3</em>)</div></div></li>
+      </ul>
+    </li>
+    <li>
+      <div class="check-item" data-task="ex2"><div class="checkbox"></div><div class="check-label"><strong>EX 2 "Project M"</strong> (Mewtwonite X/Y required)</div></div>
+      <ul class="sub-list">
+        <li><div class="check-item" data-task="ex2-elevator"><div class="checkbox"></div><div class="check-label">Lysandre Café elevator → Lysandre Labs B3F</div></div></li>
+        <li><div class="check-item" data-task="ex2-mewtwo"><div class="checkbox"></div><div class="check-label">Catch Lv. 70 Mewtwo (<em>not in Hyperspace dex but unlocks EX 3</em>)</div></div></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="group" data-group="p6-zeraora">
+  <h3 class="group-title">// EX 3: ZERAORA</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="ex3-bread"><div class="checkbox"></div><div class="check-label">Buy Canari Bread (₽1,300) from Tarragon at Racine Construction</div></div></li>
+    <li><div class="check-item" data-task="ex3-trade"><div class="checkbox"></div><div class="check-label">Trade to boy on Vert Sector 3 rooftop (Holovator near Café Cyclone) → receive Popping Candy</div></div></li>
+    <li><div class="check-item" data-task="ex3-ansha"><div class="checkbox"></div><div class="check-label">Give Popping Candy to Ansha → unlocks Plasma-Glazed Donut recipe (sour 400 / bitter 280 / spicy 200)</div></div></li>
+    <li><div class="check-item" data-task="ex3-emma"><div class="checkbox"></div><div class="check-label">Answer Emma's call → enter yellow distortion at Gare de Lumiose</div></div></li>
+    <li><div class="check-item" data-task="ex3-defeat"><div class="checkbox"></div><div class="check-label">Defeat Lv. 200 Rogue Mega Zeraora (Ground-type counter recommended)</div></div></li>
+    <li><div class="check-item dex" data-task="dex-zeraora"><div class="checkbox"></div><div class="check-label">Catch <strong>Zeraora</strong> ✓ + Zeraorite</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="p6-garchomp">
+  <h3 class="group-title">// GARCHOMPITE Z EVENT</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="garchomp-distortion"><div class="checkbox"></div><div class="check-label">Enter special distortion on map (live event, no end date)</div></div></li>
+    <li><div class="check-item" data-task="garchomp-defeat"><div class="checkbox"></div><div class="check-label">Defeat Mega Garchomp Z → receive Garchompite Z (not a dex entry, completes Mega collection)</div></div></li>
+  </ul>
+</div>
+```
+
+  </section>
+
+  <!-- ============== TRADE EVOS ============== -->
+
+  <section class="phase" id="trade-evos" data-phase="trade-evos">
+    <div class="phase-header">
+      <span class="phase-number">CRITICAL</span>
+      <h2 class="phase-title">Trade Evolutions</h2>
+    </div>
+    <div class="phase-progress">Z-A has <strong>no Linking Cord</strong>. You need a real second player. <span class="count" data-phase-count="trade-evos"></span></div>
+
+```
+<div class="group" data-group="trade-evos-main">
+  <h3 class="group-title">// THE UNAVOIDABLE SOLO BLOCKERS</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="trade-partner"><div class="checkbox"></div><div class="check-label">Coordinate trade partner via Game8 Trading Board (~30 min)</div></div></li>
+    <li><div class="check-item dex" data-task="dex-porygon2"><div class="checkbox"></div><div class="check-label">Trade Porygon holding <strong>Up-Grade</strong> → <strong>Porygon2</strong> ✓</div></div></li>
+    <li><div class="check-item dex" data-task="dex-porygonz"><div class="checkbox"></div><div class="check-label">Trade Porygon2 holding <strong>Dubious Disc</strong> → <strong>Porygon-Z</strong> ✓</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="special-evos">
+  <h3 class="group-title">// SPECIAL EVOLUTION METHODS REFERENCE</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="evo-annihilape"><div class="checkbox"></div><div class="check-label"><strong>Annihilape</strong> — Primeape uses Rage Fist 20× (Justice Dojo dummies count)</div></div></li>
+    <li><div class="check-item" data-task="evo-sirfetchd"><div class="checkbox"></div><div class="check-label"><strong>Sirfetch'd</strong> — Galarian Farfetch'd lands 3 critical hits in single battle (Leek + Focus Energy)</div></div></li>
+    <li><div class="check-item" data-task="evo-runerigus"><div class="checkbox"></div><div class="check-label"><strong>Runerigus</strong> — Galarian Yamask takes 49+ damage without fainting, then stand under Coulant Waterway bridge between WZ 11 and 17</div></div></li>
+    <li><div class="check-item" data-task="evo-overqwil"><div class="checkbox"></div><div class="check-label"><strong>Overqwil</strong> — Hisuian Qwilfish uses Barb Barrage 20× in Strong Style</div></div></li>
+    <li><div class="check-item" data-task="evo-gholdengo"><div class="checkbox"></div><div class="check-label"><strong>Gholdengo</strong> — Level up Gimmighoul holding 999 Gimmighoul Coins</div></div></li>
+    <li><div class="check-item" data-task="evo-kleavor"><div class="checkbox"></div><div class="check-label"><strong>Kleavor</strong> — Black Augurite on Scyther</div></div></li>
+    <li><div class="check-item" data-task="evo-armarouge"><div class="checkbox"></div><div class="check-label"><strong>Armarouge</strong> — Charcadet + Auspicious Armor</div></div></li>
+    <li><div class="check-item" data-task="evo-ceruledge"><div class="checkbox"></div><div class="check-label"><strong>Ceruledge</strong> — Charcadet + Malicious Armor</div></div></li>
+    <li><div class="check-item" data-task="evo-milotic"><div class="checkbox"></div><div class="check-label"><strong>Milotic</strong> — Feebas + Prism Scale (no trade needed in Z-A)</div></div></li>
+    <li><div class="check-item" data-task="evo-time"><div class="checkbox"></div><div class="check-label"><strong>Time-of-day evolutions</strong> — Sleep at Hotel Z to flip day/night (Houndstone, Chimecho, Alolan Marowak)</div></div></li>
+  </ul>
+</div>
+```
+
+  </section>
+
+  <!-- ============== REFERENCES ============== -->
+
+  <section class="phase" id="references" data-phase="references">
+    <div class="phase-header">
+      <span class="phase-number">REFERENCE</span>
+      <h2 class="phase-title">Mega Stones & Cheatsheet</h2>
+    </div>
+
+```
+<div class="reference">
+  <div class="reference-title">// STORY-MANDATORY DROPS (AUTO-ACQUIRED)</div>
+  <div class="stones-list">
+    <span class="stone">Absolite Z</span> · <span class="stone">Staraptite</span> · <span class="stone">Tatsugirinite</span> · <span class="stone">Meowsticite</span> · <span class="stone">Heatranite</span> · <span class="stone">Darkranite</span> · <span class="stone">Magearnite</span> · <span class="stone">Zeraorite</span> · <span class="stone">Red Orb</span> · <span class="stone">Blue Orb</span>
+  </div>
+</div>
+
+<div class="group" data-group="megas-portal">
+  <h3 class="group-title">// RANDOM HYPERSPACE PORTAL HUNTS</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="mega-chimechite"><div class="checkbox"></div><div class="check-label">Chimechite (2★ portal)</div></div></li>
+    <li><div class="check-item" data-task="mega-scovillainite"><div class="checkbox"></div><div class="check-label">Scovillainite (2★ portal)</div></div></li>
+    <li><div class="check-item" data-task="mega-golisopite"><div class="checkbox"></div><div class="check-label">Golisopite (3★ portal)</div></div></li>
+    <li><div class="check-item" data-task="mega-golurkite"><div class="checkbox"></div><div class="check-label">Golurkite (3★ portal)</div></div></li>
+    <li><div class="check-item" data-task="mega-glimmoranite"><div class="checkbox"></div><div class="check-label">Glimmoranite (4★ portal)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="megas-side">
+  <h3 class="group-title">// SIDE MISSION REWARDS</h3>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="mega-raichunite"><div class="checkbox"></div><div class="check-label">Raichunite X <em>or</em> Y (SM 139 — pick one)</div></div></li>
+    <li><div class="check-item" data-task="mega-crabominite"><div class="checkbox"></div><div class="check-label">Crabominite (SM 141)</div></div></li>
+    <li><div class="check-item" data-task="mega-lucarionite"><div class="checkbox"></div><div class="check-label">Lucarionite Z (SM 197)</div></div></li>
+    <li><div class="check-item" data-task="mega-latiasite"><div class="checkbox"></div><div class="check-label">Latiasite + Latiosite (SM 189)</div></div></li>
+  </ul>
+</div>
+
+<div class="group" data-group="megas-ranked">
+  <h3 class="group-title">// RANKED BATTLE SEASON REWARDS</h3>
+  <div class="callout">Competitive play required. These don't block dex completion but do block "complete Mega collection."</div>
+  <ul class="checklist">
+    <li><div class="check-item" data-task="mega-baxcalibrite"><div class="checkbox"></div><div class="check-label">Baxcalibrite (Season 4)</div></div></li>
+    <li><div class="check-item" data-task="mega-sceptilite"><div class="checkbox"></div><div class="check-label">Sceptilite (Season 5)</div></div></li>
+    <li><div class="check-item" data-task="mega-blazikenite"><div class="checkbox"></div><div class="check-label">Blazikenite (later season)</div></div></li>
+    <li><div class="check-item" data-task="mega-swampertite"><div class="checkbox"></div><div class="check-label">Swampertite (later season)</div></div></li>
+  </ul>
+</div>
+
+<div class="reference">
+  <div class="reference-title">// SPEEDRUN EFFICIENCY CHEATSHEET</div>
+  <div style="color: var(--ink-dim); line-height: 1.7;">
+    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--electric);">Bench reroll</strong> — sit on any bench → "Kill some time here" → rerolls all zone locations & species. Free, unlimited, your most-used tool.</p>
+    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--electric);">Backup save</strong> — title screen → Up + X + B → loads pre-craft autosave. Use for shiny SR on one-shot Special Donuts.</p>
+    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--electric);">Battle Zone clear</strong> ≈ 10,000 Survey Points (~4–6 min with Spicy donut buffs + Mega sweeper).</p>
+    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--electric);">Save 5★ Hyper Berries</strong> for Special Donuts only — Haban / Colbur / Babiri / Chilan / Roseli.</p>
+    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--electric);">First-turn Quick Ball</strong> is mathematically optimal even on Lv. 200 wild mons.</p>
+    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--electric);">False Swipe + status</strong> = trivial catch HP management.</p>
+    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--electric);">Master Ball</strong> — Mable's Research Lv. 49.</p>
+    <p><strong style="color: var(--electric);">Shiny Charm</strong> — Mable's Research Lv. 50.</p>
+  </div>
+</div>
+
+<div class="reference">
+  <div class="reference-title">// TIME BUDGET</div>
+  <table class="time-table">
+    <thead>
+      <tr><th>Phase</th><th>Time</th><th>Cumulative</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Phase 0: Pre-DLC prep</td><td>2–3 hr</td><td>2–3 hr</td></tr>
+      <tr><td>Phase 1: DLC ignition</td><td>0.75 hr</td><td>3–4 hr</td></tr>
+      <tr><td>Phase 2: HM 1–3</td><td>3 hr</td><td>6–7 hr</td></tr>
+      <tr><td>Phase 3: HM 4–8</td><td>4 hr</td><td>10–11 hr</td></tr>
+      <tr><td>Phase 4: HM 9–11</td><td>2 hr</td><td>12–13 hr</td></tr>
+      <tr><td>Phase 5: Postgame</td><td>10–18 hr</td><td>22–31 hr</td></tr>
+      <tr><td>Phase 6: EX missions</td><td>2–3 hr</td><td>24–34 hr</td></tr>
+      <tr class="total-row"><td>TOTAL</td><td colspan="2">23–33 hr</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+  </section>
+
+  <!-- ============== FINAL CHECKLIST ============== -->
+
+  <section class="phase" id="final">
+    <div class="victory-banner" id="victory-banner">
+      <div class="victory-title" id="victory-title">// LIVING DEX STATUS</div>
+      <div class="victory-count"><span id="final-dex-count">0</span><span style="font-size: 0.5em; color: var(--ink-faint);">/132</span></div>
+      <div class="victory-message" id="victory-message">Hyperspace exploration in progress...</div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Hyperspace Lumiose Speedrun Guide <span class="pulse">●</span> Progress saved locally to your browser</p>
+    <p style="margin-top: 0.5rem;">v1.0 // glitchless route // 132 entries</p>
+  </footer>
+
+</div>
+
+<!-- Reset confirmation modal -->
+
+<div class="reset-confirm" id="reset-modal">
+  <div class="reset-modal">
+    <h3>// CONFIRM RESET</h3>
+    <p>This will permanently clear all your saved progress. Are you sure?</p>
+    <div class="btn-row">
+      <button class="btn danger" onclick="resetAll()">YES, RESET</button>
+      <button class="btn" onclick="document.getElementById('reset-modal').classList.remove('show')">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============= POKÉDEX DATA =============
+  const dexData = {
+    '1star': [
+      'Mankey', 'Cubone', 'Greavard', 'Sandygast', 'Purrloin', 'Munna',
+      'Wimpod', 'Nickit', 'Clobbopus', 'Mime Jr.', 'Spoink', 'Squawkabilly',
+      'Crabrawler', 'Gulpin', 'Zubat', 'Maschiff', 'Chingling', 'Starly',
+      'Rookidee', 'Shroodle', 'Galarian Yamask', 'Pikipek'
+    ],
+    '2star': [
+      'Treecko', 'Torchic', 'Mudkip', 'Galarian Meowth', 'Kantonian Farfetch\'d',
+      'Galarian Farfetch\'d', 'Capsakid', 'Tinkatink', 'Feebas', 'Igglybuff',
+      'Fidough', 'Foongus', 'Toxel', 'Charcadet', 'Zangoose', 'Trumbeak'
+    ],
+    '3star': [
+      'Primeape', 'Persian (Kantonian)', 'Persian (Alolan)', 'Perrserker', 'Porygon',
+      'Scovillain', 'Hisuian Qwilfish', 'Liepard', 'Throh', 'Sawk',
+      'Golisopod', 'Thievul', 'Mr. Mime (Kantonian)', 'Mr. Mime (Galarian)',
+      'Indeedee', 'Chimecho', 'Glimmet', 'Cryogonal', 'Naclstack', 'Golbat',
+      'Golett', 'Corvisquire', 'Jigglypuff', 'Dachsbun', 'Staravia', 'Grafaiai',
+      'Seviper', 'Morpeko', 'Mimikyu', 'Grovyle', 'Combusken', 'Marshtomp',
+      'Roaming Gimmighoul', 'Sirfetch\'d', 'Milotic'
+    ],
+    '4star': [
+      'Sceptile', 'Blaziken', 'Swampert', 'Marowak (Kantonian)', 'Marowak (Alolan)',
+      'Cyclizar', 'Glimmora', 'Kecleon', 'Flamigo', 'Dondozo', 'Tatsugiri',
+      'Cofagrigus', 'Crobat', 'Wigglytuff', 'Staraptor', 'Grumpig',
+      'Crabominable', 'Garganacl', 'Swalot', 'Mabosstiff', 'Toxtricity (Amped)',
+      'Toxtricity (Low-Key)', 'Mr. Rime', 'Amoonguss', 'Corviknight',
+      'Houndstone', 'Palossand', 'Golurk', 'Musharna', 'Kleavor',
+      'Annihilape', 'Runerigus', 'Overqwil', 'Gholdengo'
+    ],
+    '5star': ['Rotom', 'Frigibax', 'Arctibax', 'Baxcalibur']
+  };
+
+  // ============= STORAGE =============
+  const STORAGE_KEY = 'hyperspace-lumiose-progress-v1';
+
+  function loadProgress() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveProgress(state) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+      console.error('Save failed:', e);
+    }
+  }
+
+  let state = loadProgress();
+
+  // ============= BUILD DEX GRIDS =============
+  function buildDexGrids() {
+    Object.keys(dexData).forEach(tier => {
+      const grid = document.getElementById(`dex-grid-${tier}`);
+      if (!grid) return;
+      dexData[tier].forEach(name => {
+        const id = `dex-${tier}-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+        const item = document.createElement('div');
+        item.className = 'dex-item';
+        item.dataset.task = id;
+        item.dataset.dex = 'true';
+        item.innerHTML = `
+          <div class="dex-checkbox"></div>
+          <div class="dex-name">${name}</div>
+        `;
+        grid.appendChild(item);
+      });
+    });
+  }
+
+  // ============= INTERACTION =============
+  function handleClick(el) {
+    const task = el.dataset.task;
+    if (!task) return;
+    state[task] = !state[task];
+    saveProgress(state);
+    applyState();
+    updateProgress();
+  }
+
+  function applyState() {
+    document.querySelectorAll('[data-task]').forEach(el => {
+      const task = el.dataset.task;
+      if (state[task]) {
+        el.classList.add('checked');
+      } else {
+        el.classList.remove('checked');
+      }
+    });
+
+    // Mark groups as complete if all their items are checked
+    document.querySelectorAll('[data-group]').forEach(group => {
+      const items = group.querySelectorAll('[data-task]');
+      if (items.length === 0) return;
+      const allDone = Array.from(items).every(i => state[i.dataset.task]);
+      if (allDone) {
+        group.classList.add('complete');
+      } else {
+        group.classList.remove('complete');
+      }
+    });
+  }
+
+  // ============= PROGRESS COUNTING =============
+  function updateProgress() {
+    const allTasks = document.querySelectorAll('[data-task]');
+    const total = allTasks.length;
+    const done = Array.from(allTasks).filter(t => state[t.dataset.task]).length;
+
+    document.getElementById('tasks-done').textContent = done;
+    document.getElementById('tasks-total').textContent = total;
+    const taskPct = total > 0 ? (done / total) * 100 : 0;
+    document.getElementById('tasks-bar').style.width = taskPct + '%';
+
+    // Dex count: count all tasks marked as dex entries
+    const dexTasks = document.querySelectorAll('[data-task].dex, [data-task][data-dex="true"]');
+    const dexDone = Array.from(dexTasks).filter(t => state[t.dataset.task]).length;
+    document.getElementById('dex-done').textContent = dexDone;
+    document.getElementById('final-dex-count').textContent = dexDone;
+    const dexPct = (dexDone / 132) * 100;
+    document.getElementById('dex-bar').style.width = dexPct + '%';
+
+    // Phase counts
+    document.querySelectorAll('[data-phase]').forEach(phase => {
+      const phaseTasks = phase.querySelectorAll('[data-task]');
+      const phaseDone = Array.from(phaseTasks).filter(t => state[t.dataset.task]).length;
+      const counter = phase.querySelector(`[data-phase-count="${phase.dataset.phase}"]`);
+      if (counter && phaseTasks.length > 0) {
+        const allDone = phaseDone === phaseTasks.length;
+        counter.innerHTML = allDone
+          ? `<span class="complete">✓ COMPLETE</span> (${phaseDone}/${phaseTasks.length})`
+          : `${phaseDone}/${phaseTasks.length} complete`;
+      }
+
+      // Update nav
+      const navLink = document.querySelector(`.phase-nav a[href="#${phase.id}"]`);
+      if (navLink && phaseTasks.length > 0) {
+        if (phaseDone === phaseTasks.length) {
+          navLink.classList.add('complete');
+        } else {
+          navLink.classList.remove('complete');
+        }
+      }
+    });
+
+    // Victory banner
+    const banner = document.getElementById('victory-banner');
+    const title = document.getElementById('victory-title');
+    const message = document.getElementById('victory-message');
+    if (dexDone === 132) {
+      banner.classList.add('complete');
+      title.textContent = '// LIVING DEX COMPLETE //';
+      message.textContent = '132 entries captured. The Hyperspace Pokédex is yours.';
+    } else {
+      banner.classList.remove('complete');
+      title.textContent = '// LIVING DEX STATUS';
+      const remaining = 132 - dexDone;
+      message.textContent = remaining === 132
+        ? 'Hyperspace exploration in progress...'
+        : `${remaining} entries remaining. Keep pushing.`;
+    }
+  }
+
+  // ============= EXPORT / IMPORT / RESET =============
+  function exportProgress() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `hyperspace-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function importProgress(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const imported = JSON.parse(e.target.result);
+        state = imported;
+        saveProgress(state);
+        applyState();
+        updateProgress();
+        alert('Progress imported successfully.');
+      } catch (err) {
+        alert('Invalid save file.');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  function confirmReset() {
+    document.getElementById('reset-modal').classList.add('show');
+  }
+
+  function resetAll() {
+    state = {};
+    localStorage.removeItem(STORAGE_KEY);
+    applyState();
+    updateProgress();
+    document.getElementById('reset-modal').classList.remove('show');
+  }
+
+  // ============= INIT =============
+  document.addEventListener('DOMContentLoaded', () => {
+    buildDexGrids();
+
+    // Wire up click handlers via event delegation
+    document.body.addEventListener('click', (e) => {
+      const target = e.target.closest('[data-task]');
+      if (target) {
+        handleClick(target);
+      }
+    });
+
+    // Close modal on backdrop click
+    document.getElementById('reset-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'reset-modal') {
+        document.getElementById('reset-modal').classList.remove('show');
+      }
+    });
+
+    applyState();
+    updateProgress();
+  });
+</script>
+
+</body>
+</html>
